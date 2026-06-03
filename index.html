@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Chrome UI (hover devices only): credit badge with idle-fade.
+    // Deferred until body exists since the script may run in <head>.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} by ClickUp Brain';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initChromeUI);
+    } else {
+        initChromeUI();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Serenity Place — Your Space</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --pink: oklch(65% 0.18 350); --pink-deep: oklch(52% 0.2 345); --pink-light: oklch(94% 0.035 350); --pink-soft: oklch(97% 0.012 350); --rose: oklch(70% 0.13 10); --rose-light: oklch(95% 0.02 10); --peach: oklch(82% 0.08 45); --peach-light: oklch(96% 0.02 45); --text: oklch(24% 0.015 350); --text-mid: oklch(38% 0.01 350); --text-light: oklch(52% 0.008 350); --surface: oklch(99.5% 0.003 350); --border: oklch(92% 0.008 350); }
+body { font-family: 'Nunito', -apple-system, system-ui, sans-serif; background: var(--pink-soft); color: var(--text); line-height: 1.7; font-size: 17px; }
+header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; position: sticky; top: 0; z-index: 50; }
+.header-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+.logo { font-size: 1.05rem; font-weight: 900; color: var(--pink-deep); }
+.logo span { color: var(--pink); }
+nav ul { list-style: none; display: flex; gap: 3px; flex-wrap: wrap; }
+nav a { text-decoration: none; color: var(--text-mid); font-weight: 700; font-size: 0.8rem; padding: 7px 11px; border-radius: 8px; transition: all 180ms cubic-bezier(0.22,1,0.36,1); white-space: nowrap; }
+nav a:hover, nav a.active { background: var(--pink-light); color: var(--pink-deep); }
+.hero { text-align: center; padding: 70px 24px 56px; background: linear-gradient(170deg, var(--pink-light) 0%, var(--pink-soft) 100%); }
+.hero h1 { font-size: clamp(2rem,5vw,3rem); font-weight: 900; color: var(--pink-deep); line-height: 1.15; margin-bottom: 14px; }
+.hero p { font-size: 1.1rem; color: var(--text-mid); font-weight: 600; max-width: 480px; margin: 0 auto; }
+.tiles { max-width: 850px; margin: -28px auto 0; padding: 0 24px; position: relative; z-index: 5; display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+.tile { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 8px; text-align: center; color: var(--text); transition: all 200ms cubic-bezier(0.22,1,0.36,1); box-shadow: 0 4px 14px oklch(20% 0.01 350 / 0.04); cursor: pointer; }
+.tile:hover { transform: translateY(-3px); box-shadow: 0 8px 24px oklch(20% 0.01 350 / 0.08); border-color: var(--pink); }
+.tile .tile-icon { font-size: 1.5rem; margin-bottom: 5px; }
+.tile .tile-title { font-size: 0.72rem; font-weight: 800; color: var(--pink-deep); }
+.page { display: none; }
+.page.active { display: block; }
+.page-section { max-width: 750px; margin: 0 auto; padding: 56px 24px; }
+.page-section h2 { font-size: 1.9rem; font-weight: 900; color: var(--pink-deep); margin-bottom: 8px; }
+.page-section .sub { font-size: 1rem; color: var(--text-light); font-weight: 600; margin-bottom: 28px; }
+.rights-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.rights-list li { background: var(--surface); border-radius: 14px; padding: 18px 20px; font-size: 0.95rem; font-weight: 700; display: flex; align-items: flex-start; gap: 12px; box-shadow: 0 2px 8px oklch(20% 0.01 350 / 0.03); }
+.rights-list .num { background: var(--pink); color: white; width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 900; flex-shrink: 0; }
+.omb-box { background: var(--pink-deep); border-radius: 20px; padding: 36px 32px; text-align: center; margin-top: 32px; }
+.omb-box h3 { color: white; font-size: 1.3rem; font-weight: 900; margin-bottom: 8px; }
+.omb-box .omb-sub { color: oklch(88% 0.04 350); font-size: 0.95rem; font-weight: 600; margin-bottom: 24px; }
+.omb-box .omb-name { color: white; font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; }
+.omb-contacts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 400px; margin: 0 auto; }
+.omb-contact { background: oklch(100% 0 0 / 0.1); border: 1px solid oklch(100% 0 0 / 0.15); border-radius: 12px; padding: 14px 12px; }
+.omb-contact .oc-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: oklch(78% 0.05 350); }
+.omb-contact .oc-value { font-size: 0.95rem; font-weight: 800; color: white; margin-top: 2px; }
+.omb-hotline { background: oklch(100% 0 0 / 0.18); border: 2px solid oklch(100% 0 0 / 0.25); border-radius: 14px; padding: 18px; margin-top: 16px; max-width: 400px; margin-left: auto; margin-right: auto; }
+.omb-hotline .oc-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: oklch(80% 0.05 350); }
+.omb-hotline .oc-value { font-size: 1.5rem; font-weight: 900; color: white; margin-top: 4px; }
+.omb-note { color: oklch(88% 0.04 350); font-size: 0.88rem; font-weight: 700; margin-top: 20px; }
+.rule-category { margin-bottom: 28px; }
+.rule-category h3 { font-size: 1.05rem; font-weight: 800; color: var(--pink-deep); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid var(--pink-light); }
+.rule-item { background: var(--surface); border-radius: 12px; padding: 14px 18px; margin-bottom: 8px; font-size: 0.9rem; font-weight: 600; color: var(--text); }
+.rule-item .consequence { font-size: 0.8rem; color: var(--text-light); font-weight: 700; margin-top: 6px; font-style: italic; }
+.il-tabs { display: flex; gap: 6px; margin-bottom: 24px; flex-wrap: wrap; }
+.il-tab { font-family: inherit; font-size: 0.82rem; font-weight: 700; padding: 9px 16px; border-radius: 100px; border: 1px solid var(--border); background: var(--surface); color: var(--text-mid); cursor: pointer; transition: all 150ms; }
+.il-tab.active { background: var(--pink); color: white; border-color: var(--pink); }
+.il-tab:hover:not(.active) { background: var(--pink-light); color: var(--pink-deep); }
+.il-panel { display: none; }
+.il-panel.active { display: block; }
+.res-list { display: flex; flex-direction: column; gap: 10px; }
+.res-link { display: flex; align-items: center; gap: 14px; padding: 16px 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; text-decoration: none; color: var(--text); transition: all 180ms cubic-bezier(0.22,1,0.36,1); }
+.res-link:hover { border-color: var(--pink); transform: translateY(-2px); box-shadow: 0 4px 16px oklch(20% 0.01 350 / 0.06); }
+.res-link .res-icon { font-size: 1.5rem; flex-shrink: 0; }
+.res-link .res-text h4 { font-size: 0.9rem; font-weight: 800; color: var(--pink-deep); }
+.res-link .res-text p { font-size: 0.78rem; color: var(--text-light); font-weight: 600; margin-top: 2px; }
+.res-link .arrow { margin-left: auto; color: var(--text-light); font-size: 1.1rem; transition: transform 150ms; }
+.res-link:hover .arrow { transform: translateX(3px); color: var(--pink); }
+.form-section-title { font-size: 0.92rem; font-weight: 800; color: var(--rose); margin-bottom: 12px; margin-top: 20px; }
+.grievance-info { background: var(--surface); border-radius: 16px; padding: 24px; margin-bottom: 28px; border: 1px solid var(--border); }
+.grievance-info h3 { font-size: 1rem; font-weight: 800; color: var(--pink-deep); margin-bottom: 10px; }
+.grievance-info p { font-size: 0.9rem; color: var(--text-mid); font-weight: 600; margin-bottom: 8px; }
+.grievance-info ul { list-style: none; padding: 0; }
+.grievance-info li { font-size: 0.88rem; font-weight: 600; color: var(--text-mid); padding: 4px 0 4px 20px; position: relative; }
+.grievance-info li::before { content: "→"; position: absolute; left: 0; color: var(--pink); font-weight: 800; }
+.grievance-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 32px; }
+.step-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 14px; text-align: center; }
+.step-card .step-num { width: 32px; height: 32px; background: var(--pink); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 900; margin: 0 auto 10px; }
+.step-card .step-text { font-size: 0.78rem; font-weight: 700; color: var(--text-mid); }
+.contact-box { background: var(--rose-light); border-radius: 14px; padding: 20px 24px; margin-bottom: 24px; }
+.contact-box h4 { font-size: 0.9rem; font-weight: 800; color: var(--pink-deep); margin-bottom: 8px; }
+.contact-box p { font-size: 0.85rem; color: var(--text-mid); font-weight: 600; margin-bottom: 4px; }
+.contact-box .alt { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.form-container { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 32px; }
+.form-container h3 { font-size: 1.1rem; font-weight: 800; color: var(--pink-deep); margin-bottom: 20px; }
+.form-row { margin-bottom: 18px; }
+.form-row label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-mid); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.form-row input, .form-row select, .form-row textarea { width: 100%; font-family: inherit; font-size: 0.92rem; padding: 12px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--pink-soft); color: var(--text); outline: none; transition: border-color 150ms, box-shadow 150ms; }
+.form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--pink); box-shadow: 0 0 0 3px var(--pink-light); }
+.form-row textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+.form-row select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' stroke='%23666' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.submit-btn { font-family: inherit; font-size: 1rem; font-weight: 800; padding: 14px 32px; background: var(--pink-deep); color: white; border: none; border-radius: 12px; cursor: pointer; transition: all 200ms cubic-bezier(0.22,1,0.36,1); width: 100%; margin-top: 8px; }
+.submit-btn:hover { background: var(--pink); transform: translateY(-2px); box-shadow: 0 6px 20px oklch(50% 0.1 350 / 0.2); }
+.important-note { background: oklch(95% 0.03 70); border: 1px solid oklch(88% 0.05 70); border-radius: 12px; padding: 16px 20px; margin-top: 24px; }
+.important-note p { font-size: 0.88rem; color: var(--text-mid); font-weight: 700; margin: 0; }
+.hp-field { opacity: 0; position: absolute; top: 0; left: 0; height: 0; width: 0; z-index: -1; }
+.learn-category { margin-bottom: 28px; }
+.learn-category h3 { font-size: 1rem; font-weight: 800; color: var(--pink-deep); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.learn-category h3 .cat-icon { font-size: 1.2rem; }
+footer { background: oklch(22% 0.015 350); padding: 28px 24px; text-align: center; }
+footer p { font-size: 0.8rem; color: oklch(65% 0.01 350); font-weight: 600; }
+@media (max-width: 700px) { .tiles { grid-template-columns: repeat(3, 1fr); } .hero { padding: 50px 20px 44px; } .page-section { padding: 40px 20px; } .omb-contacts { grid-template-columns: 1fr; } nav ul { gap: 2px; } nav a { font-size: 0.72rem; padding: 6px 7px; } .il-tabs { gap: 4px; } .il-tab { font-size: 0.76rem; padding: 7px 12px; } .grievance-steps { grid-template-columns: 1fr 1fr; } .form-grid { grid-template-columns: 1fr; } .form-container { padding: 24px 20px; } }
+@media (max-width: 480px) { .tiles { grid-template-columns: 1fr 1fr; } .grievance-steps { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header><div class="header-inner"><div class="logo">A <span>Serenity</span> Place</div><nav><ul><li><a href="#" class="active" onclick="go('home',this)">Home</a></li><li><a href="#" onclick="go('rights-pg',this)">My Rights</a></li><li><a href="#" onclick="go('omb-pg',this)">Ombudsman</a></li><li><a href="#" onclick="go('rules-pg',this)">House Rules</a></li><li><a href="#" onclick="go('grievance-pg',this)">Grievance</a></li><li><a href="#" onclick="go('learn-pg',this)">Learning</a></li><li><a href="#" onclick="go('il-pg',this)">IL Resources</a></li></ul></nav></div></header>
+
+<!-- HOME -->
+<div class="page active" id="home"><section class="hero"><h1>Hey, This Is Your Space</h1><p>Everything you need to know about your rights, your programs, and the people here to support you.</p></section><div class="tiles"><div class="tile" onclick="go('rights-pg',document.querySelectorAll('nav a')[1])"><div class="tile-icon">✊</div><div class="tile-title">My Rights</div></div><div class="tile" onclick="go('omb-pg',document.querySelectorAll('nav a')[2])"><div class="tile-icon">📞</div><div class="tile-title">Ombudsman</div></div><div class="tile" onclick="go('rules-pg',document.querySelectorAll('nav a')[3])"><div class="tile-icon">🏠</div><div class="tile-title">House Rules</div></div><div class="tile" onclick="go('grievance-pg',document.querySelectorAll('nav a')[4])"><div class="tile-icon">📝</div><div class="tile-title">Grievance</div></div><div class="tile" onclick="go('learn-pg',document.querySelectorAll('nav a')[5])"><div class="tile-icon">📚</div><div class="tile-title">Learning</div></div><div class="tile" onclick="go('il-pg',document.querySelectorAll('nav a')[6])"><div class="tile-icon">🚀</div><div class="tile-title">IL Resources</div></div></div><section class="page-section" style="padding-top:64px;"><h2>Welcome Home</h2><p class="sub">A Serenity Place is YOUR space. You are safe here.</p><p style="font-size:0.95rem;color:var(--text-mid);font-weight:600;">This site is just for you. Learn about your rights, who you can reach out to, house expectations, and resources for your future.</p></section></div>
+
+<!-- RIGHTS -->
+<div class="page" id="rights-pg"><section class="page-section"><h2>Your Rights</h2><p class="sub">These belong to you. Nobody can take them away.</p><ul class="rights-list"><li><span class="num">1</span>To be treated with respect and dignity at all times</li><li><span class="num">2</span>To feel safe and not be harmed, threatened, or abused</li><li><span class="num">3</span>To have your medical and mental health needs met</li><li><span class="num">4</span>To attend school and get help with your education</li><li><span class="num">5</span>To speak privately with your attorney, caseworker, or ombudsman</li><li><span class="num">6</span>To be part of decisions about your life and your service plan</li><li><span class="num">7</span>To practice your religion and culture</li><li><span class="num">8</span>To file a complaint or grievance without being punished</li><li><span class="num">9</span>To have contact with your family (when approved by the court)</li><li><span class="num">10</span>To have your personal information kept confidential</li></ul></section></div>
+
+<!-- OMBUDSMAN -->
+<div class="page" id="omb-pg"><section class="page-section"><h2>The Ombudsman</h2><p class="sub">Someone in YOUR corner who doesn't work for the group home or caseworkers.</p><p style="font-size:0.95rem;color:var(--text-mid);font-weight:600;margin-bottom:12px;">The Ombudsman makes sure you're being treated fairly. Everything is <strong>confidential</strong>.</p><p style="font-size:0.95rem;color:var(--text-mid);font-weight:600;">You do NOT need permission. You will NOT get in trouble.</p><div class="omb-box"><h3>Reach the Ombudsman</h3><p class="omb-sub">Contact anytime, no permission needed.</p><div class="omb-name">Heather Rosenberg</div><div class="omb-contacts"><div class="omb-contact"><div class="oc-label">Direct</div><div class="oc-value">850-717-4505</div></div><div class="omb-contact"><div class="oc-label">Cell</div><div class="oc-value">850-491-2203</div></div><div class="omb-contact" style="grid-column:1/-1;"><div class="oc-label">Email</div><div class="oc-value">kidsfla@myflfamilies.com</div></div></div><div class="omb-hotline"><div class="oc-label">Toll-Free Hotline</div><div class="oc-value">844-KIDS-FLA</div></div><p class="omb-note">Your conversation is private and confidential. Always.</p></div></section></div>
+
+<!-- HOUSE RULES -->
+<div class="page" id="rules-pg"><section class="page-section"><h2>House Rules</h2><p class="sub">These keep everyone safe. When in doubt, talk it out.</p><div class="rule-category"><h3>⏰ Timeliness & School</h3><div class="rule-item">Get up and ready as requested. Lunches packed before 8PM.<div class="consequence">Consequence: Allowance deducted and/or no electronics for a day</div></div><div class="rule-item">Attend school daily.<div class="consequence">Consequence: No electronics that day</div></div><div class="rule-item">Sick at home? Electronics after 5PM. Suspended? No electronics until return. D = no electronics at school. F = no electronics until grade is up.</div></div><div class="rule-category"><h3>👗 Dress Code</h3><div class="rule-item">Always dress appropriately. No revealing clothes.<div class="consequence">Consequence: Allowance deducted and/or no electronics</div></div></div><div class="rule-category"><h3>🚫 Drug Free</h3><div class="rule-item">No contraband: vapes, nicotine, drugs, lighters, charging devices.<div class="consequence">Consequence: No electronics for 30 days</div></div></div><div class="rule-category"><h3>💊 Medication</h3><div class="rule-item">Take medicine as directed, on time, in presence of staff.<div class="consequence">Consequence: No electronics that day</div></div></div><div class="rule-category"><h3>🗣️ Behaviors</h3><div class="rule-item">No profanity. Bad day? Regroup.<div class="consequence">Consequence: No electronics that day</div></div><div class="rule-item">Bullying/threats NOT tolerated.<div class="consequence">Consequence: No electronics 48 hours; possible removal</div></div></div><div class="rule-category"><h3>🔒 Safety</h3><div class="rule-item">Never enter office/locked areas unless invited. Never enter another youth's bedroom. Doors/windows locked. Blinds closed at night.<div class="consequence">Consequence: No electronics 48 hours</div></div></div><div class="rule-category"><h3>🍽️ Kitchen</h3><div class="rule-item">No stove/oven without supervision. Clean up after meals. Eat only in kitchen/dining.</div></div><div class="rule-category"><h3>📱 Electronics</h3><div class="rule-item">No electronics in restrooms. Elementary/Middle: 9AM-8PM. High school: 9AM-9PM. 1 device at a time.</div></div><div class="rule-category"><h3>🌙 Bedtime</h3><div class="rule-item">Upstairs by 8PM. Phones collected at 9PM.</div></div><div class="rule-category"><h3>🧹 Chores</h3><div class="rule-item">Done by 7PM daily.</div></div><div class="rule-category"><h3>🚗 Vehicle & Outings</h3><div class="rule-item">Never unsupervised in car. No eating/calls in vehicles. Stay with staff on outings. Max $5/month from allowance.</div></div><div style="background:var(--peach-light);border-radius:14px;padding:22px 24px;margin-top:24px;"><p style="font-size:0.92rem;color:var(--text-mid);font-weight:700;margin:0;">💡 When in doubt, talk it out! Call Mrs. Serena or Ms. Alyssa.</p></div></section></div>
+
+<!-- GRIEVANCE -->
+<div class="page" id="grievance-pg"><section class="page-section"><h2>File a Grievance</h2><p class="sub">If you feel your rights have been denied, you have the right to file a grievance. You will NOT be punished.</p><div class="grievance-info"><h3>What is a Grievance?</h3><p>A formal complaint you can file at any time if you feel your rights have been denied or abused.</p><p>You can file at any time. The sooner you file, the easier it is to investigate.</p></div><div class="grievance-steps"><div class="step-card"><div class="step-num">1</div><div class="step-text">Submit using the form below</div></div><div class="step-card"><div class="step-num">2</div><div class="step-text">Director investigates</div></div><div class="step-card"><div class="step-num">3</div><div class="step-text">Resolution within 20 business days</div></div><div class="step-card"><div class="step-num">4</div><div class="step-text">If not satisfied, request Board hearing</div></div></div><div class="contact-box"><h4>Grievances Are Sent To:</h4><p><strong>Alyssa Walker, Assistant of Operations</strong></p><p>📧 awalker@serenitypl.org · 📞 (863) 280-2865</p><div class="alt"><p><strong>Also sent to:</strong></p><p><strong>Serena Stutz, Executive Director</strong></p><p>📧 aserenityplace@aol.com · 📞 (863) 583-2367</p></div></div><div class="form-container"><h3>Grievance Form</h3><form action="https://formsubmit.co/awalker@serenitypl.org" method="POST"><input type="hidden" name="_subject" value="New Youth Grievance Submitted"><input type="hidden" name="_cc" value="aserenityplace@aol.com"><input type="hidden" name="_template" value="table"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_next" value=""><input type="text" name="_honey" class="hp-field"><div class="form-grid"><div class="form-row"><label>Your Name (Required)</label><input type="text" name="Youth Name" required placeholder="First and last name"></div><div class="form-row"><label>Today's Date</label><input type="date" name="Date Filed"></div></div><div class="form-grid"><div class="form-row"><label>Date of Incident</label><input type="date" name="Incident Date"></div><div class="form-row"><label>Time of Incident</label><input type="text" name="Incident Time" placeholder="e.g., 3:00 PM"></div></div><div class="form-row"><label>Location</label><input type="text" name="Location" placeholder="Where did this happen?"></div><div class="form-row"><label>Who was involved?</label><input type="text" name="People Involved" placeholder="Names of staff or youth"></div><div class="form-row"><label>Type of Complaint</label><select name="Complaint Type"><option value="">Select one...</option><option value="Rights denied or abused">My rights were denied or abused</option><option value="Unfair treatment by staff">Unfair treatment by staff</option><option value="Bullying or harassment">Bullying or harassment</option><option value="Safety concern">I feel unsafe</option><option value="Unsatisfactory services">Unsatisfactory services</option><option value="Disagree with consequence">I disagree with a consequence</option><option value="Needs not met">My needs aren't being met</option><option value="Other">Other</option></select></div><div class="form-row"><label>Describe what happened (Required)</label><textarea name="Description" required placeholder="Tell us what happened in your own words."></textarea></div><div class="form-row"><label>What would you like to happen?</label><textarea name="Desired Resolution" placeholder="What would a fair solution be?" style="min-height:80px;"></textarea></div><div class="form-row"><label>Witnesses</label><input type="text" name="Witnesses" placeholder="Names of anyone who saw"></div><div class="form-row"><label>Your Signature (type full name)</label><input type="text" name="Signature" required placeholder="Type your full name"></div><button type="submit" class="submit-btn">Submit Grievance</button></form></div><div class="important-note"><p>⚠️ <strong>Remember:</strong> Filing a grievance is your RIGHT. You cannot be punished for speaking up.</p></div></section></div>
+
+<!-- LEARNING -->
+<div class="page" id="learn-pg"><section class="page-section"><h2>Learning & Activities</h2><p class="sub">Interactive activities, courses, and tools to help you learn and grow.</p><div class="learn-category"><h3><span class="cat-icon">🚨</span> Human Trafficking Education</h3><div class="res-list"><a href="https://iempathize.org/all-courses/" target="_blank" class="res-link"><span class="res-icon">💪</span><div class="res-text"><h4>iEmpathize: Youth Empowerment Training</h4><p>Learn to recognize and respond to situations that could put you at risk</p></div><span class="arrow">→</span></a></div></div><div class="learn-category"><h3><span class="cat-icon">🌐</span> Internet Safety</h3><div class="res-list"><a href="https://noescaperoom.org/" target="_blank" class="res-link"><span class="res-icon">🔒</span><div class="res-text"><h4>No Escape Room</h4><p>Interactive experience about recognizing online exploitation</p></div><span class="arrow">→</span></a><a href="https://hcplc.org/kids/internet-safety" target="_blank" class="res-link"><span class="res-icon">🛡️</span><div class="res-text"><h4>Internet Safety Tips & Tools</h4><p>Learn how to stay safe online</p></div><span class="arrow">→</span></a><a href="https://docs.google.com/forms/d/e/1FAIpQLSfuFiTqMNtBRklXLueNJAl_2ory4HTxdBK4oxY5roMux4qQXw/viewform?usp=header" target="_blank" class="res-link"><span class="res-icon">📝</span><div class="res-text"><h4>Internet Safety Quiz</h4><p>Test what you know about staying safe online</p></div><span class="arrow">→</span></a></div></div><div class="learn-category"><h3><span class="cat-icon">⚖️</span> Know Your Rights</h3><div class="res-list"><a href="https://fosterpower.org/" target="_blank" class="res-link"><span class="res-icon">✊</span><div class="res-text"><h4>FosterPower</h4><p>Learn about your rights, court, placement, education, money, and more</p></div><span class="arrow">→</span></a><a href="https://www.myyouthportal.com/s/?language=en_US" target="_blank" class="res-link"><span class="res-icon">🌟</span><div class="res-text"><h4>My Youth Portal</h4><p>Florida's portal for youth in care: benefits, services, and resources</p></div><span class="arrow">→</span></a></div></div><div class="learn-category"><h3><span class="cat-icon">💰</span> Life Skills & Money</h3><div class="res-list"><a href="https://playspent.org/" target="_blank" class="res-link"><span class="res-icon">🎮</span><div class="res-text"><h4>SPENT (Budget Game)</h4><p>Can you make it through the month on a tight budget?</p></div><span class="arrow">→</span></a></div></div><div class="learn-category"><h3><span class="cat-icon">🚗</span> Driving</h3><div class="res-list"><a href="https://driversedguru.com/category/the-written-test/" target="_blank" class="res-link"><span class="res-icon">📝</span><div class="res-text"><h4>Driver's Ed Guru: Written Test Prep</h4><p>Practice questions to pass your permit test</p></div><span class="arrow">→</span></a></div></div></section></div>
+
+<!-- INDEPENDENT LIVING -->
+<div class="page" id="il-pg"><section class="page-section"><h2>Independent Living Resources</h2><p class="sub">Everything you need to prepare for life on your own.</p><div class="il-tabs"><button class="il-tab active" onclick="ilTab('driving')">🚗 Driving</button><button class="il-tab" onclick="ilTab('career')">💼 Career</button><button class="il-tab" onclick="ilTab('education')">🎓 After High School</button><button class="il-tab" onclick="ilTab('forms')">📋 Forms</button></div><div class="il-panel active" id="il-driving"><div class="res-list"><a href="https://www.flhsmv.gov/resources/handbooks-manuals/" target="_blank" class="res-link"><span class="res-icon">📖</span><div class="res-text"><h4>FL Driver's Handbooks</h4><p>Study for your permit test</p></div><span class="arrow">→</span></a><a href="https://keystoindependencefl.com/" target="_blank" class="res-link"><span class="res-icon">🔑</span><div class="res-text"><h4>Keys to Independence</h4><p>Help paying for driving courses</p></div><span class="arrow">→</span></a><a href="https://www.flhsmv.gov/locations/" target="_blank" class="res-link"><span class="res-icon">📍</span><div class="res-text"><h4>Find a DMV Near You</h4><p>Schedule your permit test</p></div><span class="arrow">→</span></a></div></div><div class="il-panel" id="il-career"><div class="res-list"><a href="http://www.careeronestop.org/" target="_blank" class="res-link"><span class="res-icon">🧭</span><div class="res-text"><h4>Career OneStop</h4><p>Explore careers, salaries, training</p></div><span class="arrow">→</span></a><a href="https://www.employflorida.com/vosnet/Default.aspx" target="_blank" class="res-link"><span class="res-icon">🌴</span><div class="res-text"><h4>Employ Florida</h4><p>Job search</p></div><span class="arrow">→</span></a><a href="https://www.jobcorps.gov/" target="_blank" class="res-link"><span class="res-icon">🏗️</span><div class="res-text"><h4>Job Corps</h4><p>Free training program</p></div><span class="arrow">→</span></a><a href="http://www.learnhowtobecome.org/" target="_blank" class="res-link"><span class="res-icon">🗺️</span><div class="res-text"><h4>Learn How to Become...</h4><p>45+ career fields</p></div><span class="arrow">→</span></a><a href="http://www.bls.gov/ooh/" target="_blank" class="res-link"><span class="res-icon">📊</span><div class="res-text"><h4>Occupational Outlook</h4><p>Pay and requirements</p></div><span class="arrow">→</span></a><a href="https://www.careeronestop.org/JobSearch/Resumes/ResumeGuide/Introduction.aspx" target="_blank" class="res-link"><span class="res-icon">✍️</span><div class="res-text"><h4>Resume Tutorial</h4><p>Build your resume</p></div><span class="arrow">→</span></a></div></div><div class="il-panel" id="il-education"><div class="res-list"><a href="http://www.fastweb.com/directory/scholarships-for-students-who-received-foster-care" target="_blank" class="res-link"><span class="res-icon">💰</span><div class="res-text"><h4>Scholarships for Foster Youth</h4></div><span class="arrow">→</span></a><a href="https://studentaid.gov/h/apply-for-aid/fafsa" target="_blank" class="res-link"><span class="res-icon">📝</span><div class="res-text"><h4>Apply for FAFSA</h4></div><span class="arrow">→</span></a><a href="https://www.fldoe.org/schools/higher-ed/fl-college-system/" target="_blank" class="res-link"><span class="res-icon">🌴</span><div class="res-text"><h4>Florida Colleges</h4></div><span class="arrow">→</span></a><a href="http://www.fc2success.org/?id=10" target="_blank" class="res-link"><span class="res-icon">🎒</span><div class="res-text"><h4>Foster Care to Success</h4></div><span class="arrow">→</span></a><a href="https://ged.com/" target="_blank" class="res-link"><span class="res-icon">✅</span><div class="res-text"><h4>GED Testing</h4></div><span class="arrow">→</span></a><a href="http://knowhow2go.acenet.edu/" target="_blank" class="res-link"><span class="res-icon">🧠</span><div class="res-text"><h4>Know How 2 Go</h4></div><span class="arrow">→</span></a><a href="http://apps.collegeboard.org/cbsearch_ss/welcome.jsp" target="_blank" class="res-link"><span class="res-icon">🔎</span><div class="res-text"><h4>Scholarship Search</h4></div><span class="arrow">→</span></a></div></div><div class="il-panel" id="il-forms"><p class="form-section-title">🏠 Aftercare</p><div class="res-list"><a href="https://kids.myflfamilies.com/documents/45296.docx" target="_blank" class="res-link"><span class="res-icon">📄</span><div class="res-text"><h4>Application for Aftercare Services</h4></div><span class="arrow">→</span></a><a href="https://kids.myflfamilies.com/documents/45301.pdf" target="_blank" class="res-link"><span class="res-icon">📑</span><div class="res-text"><h4>Aftercare Service Plan</h4></div><span class="arrow">→</span></a></div><p class="form-section-title">⚖️ Due Process</p><div class="res-list"><a href="https://kids.myflfamilies.com/documents/45276.doc" target="_blank" class="res-link"><span class="res-icon">📖</span><div class="res-text"><h4>Due Process Rights Brochure</h4></div><span class="arrow">→</span></a><a href="https://kids.myflfamilies.com/documents/45291.doc" target="_blank" class="res-link"><span class="res-icon">🗣️</span><div class="res-text"><h4>Oral Request for Fair Hearing</h4></div><span class="arrow">→</span></a></div><p class="form-section-title">🤝 Extended Foster Care</p><div class="res-list"><a href="https://kids.myflfamilies.com/documents/45266.doc" target="_blank" class="res-link"><span class="res-icon">✍️</span><div class="res-text"><h4>Voluntary Placement Agreement</h4></div><span class="arrow">→</span></a><a href="https://kids.myflfamilies.com/documents/45321.doc" target="_blank" class="res-link"><span class="res-icon">🏡</span><div class="res-text"><h4>Supervised Living Assessment</h4></div><span class="arrow">→</span></a></div><p class="form-section-title">🎓 PESS</p><div class="res-list"><a href="https://kids.myflfamilies.com/documents/45281.doc" target="_blank" class="res-link"><span class="res-icon">🎫</span><div class="res-text"><h4>Tuition & Fee Exemption Letter</h4></div><span class="arrow">→</span></a><a href="https://kids.myflfamilies.com/documents/45346.pdf" target="_blank" class="res-link"><span class="res-icon">📋</span><div class="res-text"><h4>PESS & ETV Application</h4></div><span class="arrow">→</span></a></div></div></section></div>
+
+<footer><p>A Serenity Place · "Because a child can never have too many people to love them…"</p></footer>
+
+<script>
+function go(id,navEl){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));if(navEl)navEl.classList.add('active');window.scrollTo(0,0);}
+function ilTab(panel){document.querySelectorAll('.il-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.il-tab').forEach(t=>t.classList.remove('active'));document.getElementById('il-'+panel).classList.add('active');event.target.classList.add('active');}
+document.querySelectorAll('nav a, .tile').forEach(el=>el.addEventListener('click',e=>e.preventDefault()));
+document.querySelector('input[name="_next"]').value=window.location.href;
+</script>
+</body>
+</html>
